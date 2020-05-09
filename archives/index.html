@@ -22,7 +22,7 @@
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
 
-  <body class="">
+  <body>
     <div class="container">
       <header class="header">
   <div class="blog-title">
@@ -31,17 +31,21 @@
   <nav class="navbar">
     <ul class="menu">
       
-      <li class="menu-item">
-        <a href="/" class="menu-item-link menu-item-home">Home</a>
-      </li>
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/about" class="menu-item-link menu-item-about">About</a>
-      </li>
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
-      </li>
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/left" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
+        </li>
       
     </ul>
   </nav>
@@ -63,6 +67,24 @@
 <body>
   <section class="posts">
     
+      <a class="post" href="/2020/05/09/hexo-DIY/">
+        <div class="post-title">
+          Hexo DIY 有感
+        </div>
+        <div class="post-content">
+          
+
+开启，新世界的旅程 ~
+
+        </div>
+        <div class="post-meta">
+          <span class="disqus-comment-count" data-disqus-identifier=""></span>
+          <span class="post-time">
+            2020-05-09 11:14
+          </span>
+        </div>
+      </a>
+      
       <a class="post" href="/2019/08/17/Async-Await/">
         <div class="post-title">
           Async/Await 代替 Promise.all()
@@ -153,24 +175,6 @@
         </div>
       </a>
       
-      <a class="post" href="/2018/04/23/ajax-api/">
-        <div class="post-title">
-          Ajax 基础知识
-        </div>
-        <div class="post-content">
-          
-
-代码一把梭,快来人教我做菜吧
-
-        </div>
-        <div class="post-meta">
-          <span class="disqus-comment-count" data-disqus-identifier=""></span>
-          <span class="post-time">
-            2018-04-23 21:38
-          </span>
-        </div>
-      </a>
-      
   </section>
 
   
@@ -231,11 +235,11 @@
     var pathname = new URL(location.href).pathname.replace(/\/$/, '')
 
     switch (pathname) {
-      case '/home':
-        document.querySelector('.menu-item-contact').classList.add('active')
-        break
       case '/about':
         document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
         break
       case '/links':
         document.querySelector('.menu-item-friends').classList.add('active')

@@ -22,7 +22,7 @@
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
 
-  <body class="">
+  <body>
     <div class="container">
       <header class="header">
   <div class="blog-title">
@@ -31,17 +31,21 @@
   <nav class="navbar">
     <ul class="menu">
       
-      <li class="menu-item">
-        <a href="/" class="menu-item-link menu-item-home">Home</a>
-      </li>
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/about" class="menu-item-link menu-item-about">About</a>
-      </li>
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
-      </li>
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/left" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
+        </li>
       
     </ul>
   </nav>
@@ -49,12 +53,12 @@
 
         <main class="main">
           
-  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
-  <div class="toc-toggle toc-toggle-right">
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-" />
+  <div class="toc-toggle toc-toggle-">
     <label for="toggle-toc">
       <i class="fa fa-list-ol"></i>
     </label>
-    <div class="toc-wrap toc-wrap-right">
+    <div class="toc-wrap toc-wrap-">
       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础配置"><span class="toc-number">1.</span> <span class="toc-text">基础配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-Package-Control"><span class="toc-number">2.</span> <span class="toc-text">配置 Package Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件列表"><span class="toc-number">3.</span> <span class="toc-text">插件列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人使用癖好"><span class="toc-number">4.</span> <span class="toc-text">个人使用癖好</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#迅速打开浏览器"><span class="toc-number">4.1.</span> <span class="toc-text">迅速打开浏览器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QutoHTML-把-HTML-拼接成-js-插入字符串"><span class="toc-number">4.2.</span> <span class="toc-text">QutoHTML 把 HTML 拼接成 js 插入字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GitSavvy-的翻译"><span class="toc-number">4.3.</span> <span class="toc-text">GitSavvy 的翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#status-状态操作表"><span class="toc-number">4.3.1.</span> <span class="toc-text">status 状态操作表</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#branches-分支操作表"><span class="toc-number">4.4.</span> <span class="toc-text">branches 分支操作表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#rebase-合并操作表"><span class="toc-number">4.4.1.</span> <span class="toc-text">rebase 合并操作表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#tages-标签操作表"><span class="toc-number">4.4.2.</span> <span class="toc-text">tages 标签操作表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#graph-查看操作日志"><span class="toc-number">4.4.3.</span> <span class="toc-text">graph 查看操作日志</span></a></li></ol></li></ol></li></ol>
     </div>
   </div>
@@ -724,11 +728,11 @@
     var pathname = new URL(location.href).pathname.replace(/\/$/, '')
 
     switch (pathname) {
-      case '/home':
-        document.querySelector('.menu-item-contact').classList.add('active')
-        break
       case '/about':
         document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
         break
       case '/links':
         document.querySelector('.menu-item-friends').classList.add('active')

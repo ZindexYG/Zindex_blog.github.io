@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>Hexo DIY 有感 - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/left" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-" />
+  <div class="toc-toggle toc-toggle-">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前景"><span class="toc-number">1.</span> <span class="toc-text">前景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#知识前景"><span class="toc-number">2.</span> <span class="toc-text">知识前景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主题基本结构"><span class="toc-number">3.</span> <span class="toc-text">主题基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#遇到问题"><span class="toc-number">4.</span> <span class="toc-text">遇到问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>Hexo DIY 有感</h1>
+  <p><img src="/images/hexo-banner.jpg" alt=""></p>
+<blockquote>
+<p>开启，新世界的旅程 ~</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="前景"><a href="#前景" class="headerlink" title="前景"></a>前景</h3><blockquote>
+<p>愿景：自己的 blog ，很是希望阅读舒服的地方</p>
+</blockquote>
+<p>需求：</p>
+<ol>
+<li>设计简单，方便阅读</li>
+<li><a href="https://hexo.io/themes/" target="_blank" rel="noopener">hexo-theme</a> 上似乎都没达到自己起期待</li>
+<li>懒设计，观察到 <a href="https://blog.jiasm.org/" target="_blank" rel="noopener">贾老大的博客</a> 开启魔改</li>
+</ol>
+<h3 id="知识前景"><a href="#知识前景" class="headerlink" title="知识前景"></a>知识前景</h3><ul>
+<li>大概熟悉 <code>EJS</code></li>
+<li>大概熟悉 <code>yml</code></li>
+<li>大概熟悉 <code>styl</code></li>
+</ul>
+<p>相关文档</p>
+<ul>
+<li><a href="https://hexo.io/zh-cn/docs/variables" target="_blank" rel="noopener">hexo 变量</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/helpers" target="_blank" rel="noopener">hexo 辅助函数</a></li>
+<li><a href="https://ejs.bootcss.com/" target="_blank" rel="noopener">ejs 文档</a></li>
+</ul>
+<h3 id="主题基本结构"><a href="#主题基本结构" class="headerlink" title="主题基本结构"></a>主题基本结构</h3><p>theme 的文件结构，观察其他主题也差不多是这样</p>
+<pre class="line-numbers language-bash"><code class="language-bash">/theme
+  <span class="token operator">|</span>-- layout/                     // 布局
+  <span class="token operator">|</span>     <span class="token operator">|</span>-- _partial/             // 局部文件
+  <span class="token operator">|</span>     <span class="token operator">|</span>      <span class="token operator">|</span>-- footer.ejs
+  <span class="token operator">|</span>     <span class="token operator">|</span>      <span class="token operator">|</span>-- head.ejs
+  <span class="token operator">|</span>     <span class="token operator">|</span>      <span class="token operator">|</span>-- header.ejs
+  <span class="token operator">|</span>     <span class="token operator">|</span>-- index.ejs             // 主界面
+  <span class="token operator">|</span>     <span class="token operator">|</span>-- layout.ejs            // 布局相关
+  <span class="token operator">|</span>     <span class="token operator">|</span>-- links.ejs             // 友情链接
+  <span class="token operator">|</span>     <span class="token operator">|</span>-- post.ejs              // post 相关
+  <span class="token operator">|</span>-- source/                     // 资源文件
+  <span class="token operator">|</span>     ｜-- css/
+  <span class="token operator">|</span>     ｜-- fonts/
+  <span class="token operator">|</span>     ｜-- images/
+  <span class="token operator">|</span>-- _config.yml
+  <span class="token operator">|</span>-- .gitgnore
+  <span class="token operator">|</span>-- LICENSE
+  <span class="token operator">|</span>-- package.json
+  <span class="token operator">|</span>-- README.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><ol>
+<li><code>hexo</code> 版本问题，辅助函数方法有改变</li>
+</ol>
+<p><code>paginator</code> 在 <code>V3.x</code> 与 <code>V4.x</code> 的区别 会导致 <code>hexo server</code> 启动不成功</p>
+<pre class="line-numbers language-Javascript"><code class="language-Javascript">paginator({
+  prev_text: '<div class="paginator-item"><i class="fa fa-angle-left"></i></div>',
+  next_text: '<div class="paginator-item"><i class="fa fa-angle-right"></i></div>',
+  escape:false // V4 新增, 默认 true ，不渲染 html 标记
+})<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>大佬也忙，<code>layout</code> 上存在 <code>fixed</code> 问题</li>
+</ol>
+<p>修改 <code>/theme/layout/layout.ejs</code> 路径下</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token comment" spellcheck="true">&lt;!-- 修改前面 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>fixed<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+
+<span class="token comment" spellcheck="true">&lt;!-- 修改后 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li><code>post</code> 界面上导航，当导航过多，会有显示问题</li>
+</ol>
+<p>暂时没太多的想法，没修改</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>了解了一点 <code>ejs</code></li>
+<li>了解了一点 <code>hexo</code></li>
+<li>了解了一点 <code>yml</code></li>
+</ul>
+<p>个人感觉 <code>hexo</code> 功能在写的方面还算满足个人需求了，主题与阅读上还存在很多问题，但并不是每个需求问题都能有官方的解决方案，其他人的解决方案也并不一定能完全满足，自己花时间为自己所喜爱的事情学习一下了</p>
+<p>大佬也是普通人，有生活与工作，第一次提了 PR 有点害羞，不知道能否合并</p>
+<p>感谢 <a href="https://blog.jiasm.org/" target="_blank" rel="noopener">@贾顺名</a> 指导并不嫌弃小弟叨扰</p>
+<blockquote>
+<p>感谢阅读</p>
+</blockquote>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2020 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>

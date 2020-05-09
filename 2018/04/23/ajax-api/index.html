@@ -22,7 +22,7 @@
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
 
-  <body class="">
+  <body>
     <div class="container">
       <header class="header">
   <div class="blog-title">
@@ -31,17 +31,21 @@
   <nav class="navbar">
     <ul class="menu">
       
-      <li class="menu-item">
-        <a href="/" class="menu-item-link menu-item-home">Home</a>
-      </li>
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/about" class="menu-item-link menu-item-about">About</a>
-      </li>
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
-      </li>
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/left" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
+        </li>
       
     </ul>
   </nav>
@@ -49,12 +53,12 @@
 
         <main class="main">
           
-  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
-  <div class="toc-toggle toc-toggle-right">
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-" />
+  <div class="toc-toggle toc-toggle-">
     <label for="toggle-toc">
       <i class="fa fa-list-ol"></i>
     </label>
-    <div class="toc-wrap toc-wrap-right">
+    <div class="toc-wrap toc-wrap-">
       <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ajax"><span class="toc-number">1.</span> <span class="toc-text">Ajax</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解读步骤"><span class="toc-number">1.1.</span> <span class="toc-text">解读步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意事项"><span class="toc-number">1.2.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jsonp"><span class="toc-number">2.</span> <span class="toc-text">Jsonp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单实现"><span class="toc-number">2.1.</span> <span class="toc-text">简单实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原理解读"><span class="toc-number">2.2.</span> <span class="toc-text">原理解读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么会有-Jsonp"><span class="toc-number">2.3.</span> <span class="toc-text">为什么会有 Jsonp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsonp的最优方案"><span class="toc-number">2.4.</span> <span class="toc-text">jsonp的最优方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目前所知发起请求的方式"><span class="toc-number">3.</span> <span class="toc-text">目前所知发起请求的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
     </div>
   </div>
@@ -316,11 +320,11 @@ xmlHttp<span class="token punctuation">.</span>onreadystatechange <span class="t
     var pathname = new URL(location.href).pathname.replace(/\/$/, '')
 
     switch (pathname) {
-      case '/home':
-        document.querySelector('.menu-item-contact').classList.add('active')
-        break
       case '/about':
         document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
         break
       case '/links':
         document.querySelector('.menu-item-friends').classList.add('active')

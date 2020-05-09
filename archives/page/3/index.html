@@ -22,7 +22,7 @@
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
 
-  <body class="">
+  <body>
     <div class="container">
       <header class="header">
   <div class="blog-title">
@@ -31,17 +31,21 @@
   <nav class="navbar">
     <ul class="menu">
       
-      <li class="menu-item">
-        <a href="/" class="menu-item-link menu-item-home">Home</a>
-      </li>
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/about" class="menu-item-link menu-item-about">About</a>
-      </li>
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
       
-      <li class="menu-item">
-        <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
-      </li>
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/left" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
+        </li>
       
     </ul>
   </nav>
@@ -63,6 +67,24 @@
 <body>
   <section class="posts">
     
+      <a class="post" href="/2017/12/22/%E6%97%B6%E9%92%88%E6%BB%B4%E7%AD%94%E4%B8%80%E4%B8%8B%EF%BC%8C%E5%93%8D%E4%BA%86/">
+        <div class="post-title">
+          时针滴答一下，响了
+        </div>
+        <div class="post-content">
+          
+
+一些唠叨
+
+        </div>
+        <div class="post-meta">
+          <span class="disqus-comment-count" data-disqus-identifier=""></span>
+          <span class="post-time">
+            2017-12-22 21:53
+          </span>
+        </div>
+      </a>
+      
       <a class="post" href="/2017/12/21/webpack%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
         <div class="post-title">
           webpack学习笔记
@@ -195,11 +217,11 @@
     var pathname = new URL(location.href).pathname.replace(/\/$/, '')
 
     switch (pathname) {
-      case '/home':
-        document.querySelector('.menu-item-contact').classList.add('active')
-        break
       case '/about':
         document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
         break
       case '/links':
         document.querySelector('.menu-item-friends').classList.add('active')
