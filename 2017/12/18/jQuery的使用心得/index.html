@@ -22,7 +22,7 @@
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
 
-  <body>
+  <body class='fixed'>
     <div class="container">
       <header class="header">
   <div class="blog-title">
@@ -43,22 +43,18 @@
           <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
         </li>
       
-        <li class="menu-item">
-          <a href="/right" class="menu-item-link menu-item-post_menu_side">post_menu_side</a>
-        </li>
-      
     </ul>
   </nav>
 </header>
 
         <main class="main">
           
-  <input type="checkbox" id="toggle-toc" class="toggle-toc-" />
-  <div class="toc-toggle toc-toggle-">
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
     <label for="toggle-toc">
       <i class="fa fa-list-ol"></i>
     </label>
-    <div class="toc-wrap toc-wrap-">
+    <div class="toc-wrap toc-wrap-right">
       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#规则-amp-amp-格式"><span class="toc-number">1.</span> <span class="toc-text">规则 &amp;&amp; 格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jQ-如何解决事件冒泡"><span class="toc-number">2.</span> <span class="toc-text">jQ 如何解决事件冒泡</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#on-与-bind-的区别"><span class="toc-number">2.1.</span> <span class="toc-text">on() 与 bind() 的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#阻止冒泡行为"><span class="toc-number">2.2.</span> <span class="toc-text">阻止冒泡行为</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jQuey-的-Ajax"><span class="toc-number">3.</span> <span class="toc-text">jQuey 的 Ajax()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解析"><span class="toc-number">3.1.</span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ajaxSetup-设置默认值"><span class="toc-number">3.2.</span> <span class="toc-text">$.ajaxSetup() 设置默认值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用的-JQ-代码段"><span class="toc-number">4.</span> <span class="toc-text">常用的 JQ 代码段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-禁用页面的右键菜单"><span class="toc-number">4.1.</span> <span class="toc-text">1. 禁用页面的右键菜单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-新窗口的开页面"><span class="toc-number">4.2.</span> <span class="toc-text">2. 新窗口的开页面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-判断浏览器类型"><span class="toc-number">4.3.</span> <span class="toc-text">3. 判断浏览器类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-输入框文字获取焦点"><span class="toc-number">4.4.</span> <span class="toc-text">4. 输入框文字获取焦点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-返回头部滑动动画"><span class="toc-number">4.5.</span> <span class="toc-text">5. 返回头部滑动动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-获取鼠标位置"><span class="toc-number">4.6.</span> <span class="toc-text">6. 获取鼠标位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-判断元素是否存在"><span class="toc-number">4.7.</span> <span class="toc-text">7. 判断元素是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-点击-div-也可以跳转"><span class="toc-number">4.8.</span> <span class="toc-text">8. 点击 div 也可以跳转</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-根据浏览器大小添加样式"><span class="toc-number">4.9.</span> <span class="toc-text">9. 根据浏览器大小添加样式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-设置-div-在屏幕中央"><span class="toc-number">4.10.</span> <span class="toc-text">10. 设置 div 在屏幕中央</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-创建自己的选择器"><span class="toc-number">4.11.</span> <span class="toc-text">11. 创建自己的选择器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-关闭所有动画效果"><span class="toc-number">4.12.</span> <span class="toc-text">12. 关闭所有动画效果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-检测鼠标的左右键"><span class="toc-number">4.13.</span> <span class="toc-text">13. 检测鼠标的左右键</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-回车提交表单"><span class="toc-number">4.14.</span> <span class="toc-text">14. 回车提交表单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-设置全局-ajax-参数"><span class="toc-number">4.15.</span> <span class="toc-text">15. 设置全局 ajax 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16-获取选中的下拉框"><span class="toc-number">4.16.</span> <span class="toc-text">16. 获取选中的下拉框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17-切换复选框"><span class="toc-number">4.17.</span> <span class="toc-text">17. 切换复选框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18-使用-siblings-来选择同辈元素"><span class="toc-number">4.18.</span> <span class="toc-text">18. 使用 siblings() 来选择同辈元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#19-个性化链接"><span class="toc-number">4.19.</span> <span class="toc-text">19. 个性化链接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-一段时间后自动关闭或者隐藏元素"><span class="toc-number">4.20.</span> <span class="toc-text">20. 一段时间后自动关闭或者隐藏元素</span></a></li></ol></li></ol>
     </div>
   </div>
