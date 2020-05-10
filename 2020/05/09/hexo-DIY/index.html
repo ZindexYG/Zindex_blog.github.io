@@ -88,7 +88,7 @@
 <li><a href="https://hexo.io/zh-cn/docs/helpers" target="_blank" rel="noopener">hexo 辅助函数</a></li>
 <li><a href="https://ejs.bootcss.com/" target="_blank" rel="noopener">ejs 文档</a></li>
 </ul>
-<h3 id="主题基本结构"><a href="#主题基本结构" class="headerlink" title="主题基本结构"></a>主题基本结构</h3><p>theme 的文件结构，观察其他主题也差不多是这样</p>
+<h3 id="主题基本结构"><a href="#主题基本结构" class="headerlink" title="主题基本结构"></a>主题基本结构</h3><p>theme 的文件结构，观察其他主题也差不多是这样，可自行新建</p>
 <pre class="line-numbers language-bash"><code class="language-bash">/theme
   <span class="token operator">|</span>-- layout/                     // 布局
   <span class="token operator">|</span>     <span class="token operator">|</span>-- _partial/             // 局部文件
@@ -126,17 +126,58 @@
 
 <span class="token comment" spellcheck="true">&lt;!-- 修改后 --></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>PS：该问题在 文章数量大于或等于 8 的时候，不会出现，仅有在小于或等于 6 的时候会出现</p>
 <ol start="3">
-<li><code>post</code> 界面上导航，当导航过多，会有显示问题</li>
+<li><code>post</code> 界面上导航，当页面标题过多，会有显示问题</li>
 </ol>
 <p>暂时没太多的想法，没修改</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<p>仅帮助修改成了可在 <code>_config.yml</code> 配置 <code>left | right</code></p>
+<ol start="4">
+<li>启动时候会产生 <code>theme.menu</code> 丢失问题</li>
+</ol>
+<p>原因：大佬把 <code>menu</code> 配置写在全局 <code>config</code> 上了</p>
+<p>解决：现将配置后退只 主题 <code>_config.yml</code></p>
+<ol start="5">
+<li><code>favicon</code> 无配置项目</li>
+</ol>
+<p>已经新增入主题配置内 _config.yml，相关页面也写好配置</p>
+<pre class="line-numbers language-EJS"><code class="language-EJS"><!-- theme/layout/_partial/head.esj -->
+
+<% if (theme.favicon.small) { %>
+<link rel="icon" type="image/png" sizes="16x16" href="<%- url_for(theme.favicon.small) %> " />
+<% } %>
+<% if(theme.favicon.medium) { %>
+<link rel="icon" type="image/png" sizes="32x32" href="<%- url_for(theme.favicon.small) %> " />
+<% } %>
+<% if (theme.favicon.apple_touch_icon) { %>
+<link rel="apple-touch-icon" sizes="180x180" href="<%- url_for(theme.favicon.apple_touch_icon) %>">
+<% } %>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="6">
+<li>友链页面无法展示</li>
+</ol>
+<p>原因，友链为使用 hexo 新建页面，友情链接内容为资源页面内容</p>
+<p>解决：</p>
+<ul>
+<li>新建 <code>_data/links.yml</code></li>
+<li>新建 <code>links/index</code> (可使用 <code>hexo new page --path about/me &quot;About me&quot;</code>)</li>
+</ul>
+<pre class="line-numbers language-yml"><code class="language-yml">
+XXX:
+  link: https://xx.com/     # 地址
+  avatar: https://xxx.jpg   # 头像<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>---
+layout: links
+title: links
+date: 2018-05-06 08:08:12
+tags:
+---</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>了解了一点 <code>ejs</code></li>
 <li>了解了一点 <code>hexo</code></li>
 <li>了解了一点 <code>yml</code></li>
 </ul>
 <p>个人感觉 <code>hexo</code> 功能在写的方面还算满足个人需求了，主题与阅读上还存在很多问题，但并不是每个需求问题都能有官方的解决方案，其他人的解决方案也并不一定能完全满足，自己花时间为自己所喜爱的事情学习一下了</p>
-<p>大佬也是普通人，有生活与工作，第一次提了 PR 有点害羞，不知道能否合并</p>
+<p>大佬也是普通人，有生活与工作，第一次提了 PR 有点害羞</p>
 <p>感谢 <a href="https://blog.jiasm.org/" target="_blank" rel="noopener">@贾顺名</a> 指导并不嫌弃小弟叨扰</p>
 <blockquote>
 <p>感谢阅读</p>
