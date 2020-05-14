@@ -98,11 +98,11 @@
 </blockquote>
 <p>预备</p>
 <ul>
-<li>clone 下自己</li>
+<li>clone 下自己的项目到本地</li>
 <li>VScode + <a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner" target="_blank" rel="noopener">Run Code 插件</a></li>
 <li><code>Gist-url-key</code>， <code>Github Token</code>，<code>WakaTime-api-key</code>三个密钥</li>
 </ul>
-<p>修改 <code>.github/workflows/schedule.yml</code> 方便调试</p>
+<p>修改 <code>.github/workflows/schedule.yml</code> 线上调试，与指向自己项目</p>
 <pre class="line-numbers language-yml"><code class="language-yml">name: Update gist with WakaTime stats
 on:
   schedule:
@@ -134,7 +134,7 @@ async function updateGist(stats) {
   for (let i = 0; i < Math.min(stats.data.languages.length, 5); i++) {
     const data = stats.data.languages[i];
     const { name, percent, text: time } = data;
-    // 格式定义
+    // 内容格式
     const line = [
       name.padEnd(11),
       time
@@ -147,9 +147,13 @@ async function updateGist(stats) {
 
     lines.push(line.join(" "));
   }
-  // 记得全局科学，输出样式 console.log(lines);
+  // 记得全局科学，输出内容样式 console.log(lines);
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>各项修改完成，记得 <code>npm run build</code><br><br>提交记得连带 <code>dist/index.js</code> 一并提交</p>
+<ul>
+<li>直接点击 <code>run code</code> 即可调试，若不打印内容，则无内容输出</li>
+<li>各项修改完成，记得 <code>npm run build</code></li>
+<li>提交记得连带 <code>dist/index.js</code> 一并提交</li>
+</ul>
 <h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><blockquote>
 <p>感谢阅读，基本是为了好玩，耍的一点小把戏</p>
 </blockquote>
