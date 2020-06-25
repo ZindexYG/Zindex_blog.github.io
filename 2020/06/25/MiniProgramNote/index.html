@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>微信小程序实习记 - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于图片"><span class="toc-number">1.</span> <span class="toc-text">关于图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于分享"><span class="toc-number">2.</span> <span class="toc-text">关于分享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于请求"><span class="toc-number">3.</span> <span class="toc-text">关于请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>微信小程序实习记</h1>
+  <p><img src="/images/MiniProgram.png" alt=""></p>
+<blockquote>
+<p>看起来还算有趣</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="关于图片"><a href="#关于图片" class="headerlink" title="关于图片"></a>关于图片</h3><ul>
+<li>图片放大后，用户可以直接保存下载</li>
+<li>参数是个数组，可以在放大后左右翻动</li>
+<li>按钮下载功能，顺序是，先下载文件，然后缓存的图片调用 <code>saveImageToPhotoAlbum</code></li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">Page({
+  // 放大
+  handleExpend: function () {
+    wx.previewImage({
+      urls:[url]
+    })
+  }，
+  // 下载
+  handleDownload: function () {
+    wx.dowloadFile({
+      url:url,
+      success:res=>{
+        if (res.statusCode ===200) {
+          wx.showToast({
+            title: '保存成功',
+            icon: 'success',
+            duration: 2000,
+          })
+          wx.saveImageToPhotoAlbum({
+            filePath: res.tempFilePath
+          })
+        }
+      },
+      fail:err=>{
+        wx.showToast({
+          title: '保存失败',
+          icon: 'fail',
+          duration: 2000
+        })
+      },
+    })
+  },
+})
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于分享"><a href="#关于分享" class="headerlink" title="关于分享"></a>关于分享</h3><ul>
+<li>可以是关于小程序的分享</li>
+<li>可以是关于具体功能页面的分享（但参数）</li>
+<li>可以区分是自定义按钮的分享，或是右上角的分享</li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">Page({
+  // 相关页面，有这个方法即调用了分享功能
+  onShareAppMessage: function (res) {
+    /*
+    res：
+      - from       转发事件来源。 button：页面内转发按钮；menu：右上角转发菜单
+     */
+    return {
+      title: [String],
+      path: [url?params],
+      imageUrl?: [url] //不设置，会被程序自动截取当前页面
+    }
+  }
+})<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于请求"><a href="#关于请求" class="headerlink" title="关于请求"></a>关于请求</h3><ul>
+<li>一般的请求，开发者需要域名备案，和 https 请求， 关于一些个人开发这，这过程会略显麻烦</li>
+<li>使用云开发环境，可以使用云函数来提供参数特殊的请求方式，绕过备案和 https 检测</li>
+</ul>
+<p>过程</p>
+<ul>
+<li>新建云函数</li>
+<li>下载相关请求 npm 包（如 request &amp;&amp; request-promise)</li>
+<li>编写相关云函数 api</li>
+<li>小程序中初始化云函数，调用相关云函数</li>
+</ul>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">// 云函数 api
+const request = require('request-promise');
+
+export.main = async (event, context) => {
+  return await request({
+    method: event.method || 'GET',
+    uri: event.uri,
+    headers: event.headers || {},
+    body: event.body
+  }).then(body => {
+    return body;
+  }).catch(err => {
+    return err
+  })
+}
+
+// 小程序
+
+// app 内初始化
+App({
+  onLaunch: function () {
+    if (wx.cloud) {
+      wx.cloud.init({
+        env:['相关云开发环境名称']
+      })
+    }
+  }
+})
+
+// page 调用
+[handleFunction]:()=>{
+   wx.cloud.callFunction({
+        name: ['相关云函数'],
+        data: {
+            // http域名 https域名 第三方域名 非验证域名 IP[:prot] 内网IP或花生壳域名
+            uri:[url],
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body:[params]
+        }
+    }).then(res => {
+        console.log(res)
+        const data = res.result
+        console.log(data)
+        // do something
+    })
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>该项目属于一次个人的体验，也算是给自己接触小程序开发的一个契机，目前感觉还是很良好的</p>
+<p><img src="/images/MiniProgram_Wallpaper.jpg" alt=""></p>
+<p>欢迎各位关注一下我的小程序，没有复杂的功能，也不需要账号信息，希望得到大佬的指点一二</p>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2020 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
