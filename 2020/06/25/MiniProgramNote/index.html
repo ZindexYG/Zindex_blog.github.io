@@ -55,7 +55,7 @@
       <i class="fa fa-list-ol"></i>
     </label>
     <div class="toc-wrap toc-wrap-right">
-      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于图片"><span class="toc-number">1.</span> <span class="toc-text">关于图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于分享"><span class="toc-number">2.</span> <span class="toc-text">关于分享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于请求"><span class="toc-number">3.</span> <span class="toc-text">关于请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于图片"><span class="toc-number">1.</span> <span class="toc-text">关于图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于分享"><span class="toc-number">2.</span> <span class="toc-text">关于分享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于请求"><span class="toc-number">3.</span> <span class="toc-text">关于请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-IconFont"><span class="toc-number">4.</span> <span class="toc-text">关于 IconFont</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">5.</span> <span class="toc-text">小结</span></a></li></ol>
     </div>
   </div>
   <label class="mask" for="toggle-toc"></label>
@@ -109,7 +109,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="关于分享"><a href="#关于分享" class="headerlink" title="关于分享"></a>关于分享</h3><ul>
 <li>可以是关于小程序的分享</li>
-<li>可以是关于具体功能页面的分享（但参数）</li>
+<li>可以是关于具体功能页面的分享（带参数）</li>
 <li>可以区分是自定义按钮的分享，或是右上角的分享</li>
 </ul>
 <pre class="line-numbers language-JavaScript"><code class="language-JavaScript">Page({
@@ -186,6 +186,20 @@ App({
     })
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-IconFont"><a href="#关于-IconFont" class="headerlink" title="关于 IconFont"></a>关于 IconFont</h3><ul>
+<li>创建自定义组件</li>
+<li><a href="https://iconfont.cn" target="_blank" rel="noopener">阿里图库</a>，需要的 Icon 放入自己的项目</li>
+<li>下载，选中 css 文件内容复制到自定义组件内的 wxss 文件内</li>
+</ul>
+<p><code>&lt;text class=&quot;iconfont icon-&quot;&gt;&lt;/text&gt;</code></p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">Component({
+  options: {
+    styleIsolation: 'apply-shared' // 样式可被 page影响
+  },
+  properties: {
+    icon: String
+  }
+})<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>该项目属于一次个人的体验，也算是给自己接触小程序开发的一个契机，目前感觉还是很良好的</p>
 <p><img src="/images/MiniProgram_Wallpaper.jpg" alt=""></p>
 <p>欢迎各位关注一下我的小程序，没有复杂的功能，也不需要账号信息，希望得到大佬的指点一二</p>
