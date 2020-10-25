@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>GitHub Actions 自动化 Node.js 程序 - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于前言"><span class="toc-number">1.</span> <span class="toc-text">关于前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-node-的-docker-镜像"><span class="toc-number">2.</span> <span class="toc-text">关于 node 的 docker 镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-Github-Action-自动化的流程"><span class="toc-number">3.</span> <span class="toc-text">关于 Github Action 自动化的流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Secrets"><span class="toc-number">3.1.</span> <span class="toc-text">Secrets</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于遇到的问题"><span class="toc-number">4.</span> <span class="toc-text">关于遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：关于-node-项目使用-127-0-0-1-或-localhost-作为启动-IP-生成-docker-image-化后，运行后无法访问"><span class="toc-number">4.1.</span> <span class="toc-text">Q：关于 node 项目使用 127.0.0.1 或 localhost 作为启动 IP 生成 docker image 化后，运行后无法访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：关于-GitHub-Action-默认的环境变量"><span class="toc-number">4.2.</span> <span class="toc-text">Q：关于 GitHub Action 默认的环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于小结"><span class="toc-number">5.</span> <span class="toc-text">关于小结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于参考"><span class="toc-number">6.</span> <span class="toc-text">关于参考</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>GitHub Actions 自动化 Node.js 程序</h1>
+  <p><img src="/images/node-action-example.png" alt=""></p>
+<blockquote>
+<p>发明了新的料理，不来尝一下嘛</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="关于前言"><a href="#关于前言" class="headerlink" title="关于前言"></a>关于前言</h3><p>关于前置知识</p>
+<ul>
+<li>一点点 node</li>
+<li>一点点 docker</li>
+<li>一点点 git</li>
+</ul>
+<p>关于本文的内容：</p>
+<ul>
+<li>使用 <code>Docker</code> 部署应用</li>
+<li>使用 <code>GitHub Action</code> 持续集成 <code>Node</code> 应用到 <code>Docker Hub</code> 内</li>
+</ul>
+<p>请预先准备一个 node 的 hello world 的程序，node 官网有提供最简单的<a href="https://nodejs.org/zh-cn/about/" target="_blank" rel="noopener">例子</a></p>
+<h3 id="关于-node-的-docker-镜像"><a href="#关于-node-的-docker-镜像" class="headerlink" title="关于 node 的 docker 镜像"></a>关于 node 的 docker 镜像</h3><p>docker 镜像化现有应用， 需要一个 <code>dockerfile</code> 与 <code>.dockerignore</code>，以下是例子内的 <code>dockerfile</code></p>
+<pre class="line-numbers language-dockerfile"><code class="language-dockerfile"># 使用父镜像
+FROM node:current-slim
+
+# 设置工作目录
+WORKDIR /usr/src/app
+
+# 将文件从主机复制到当前位置
+COPY package.json .
+
+# 影像文件中运行命令
+RUN npm install
+
+# 描述容器运行时监听的端口
+EXPOSE 6060
+
+# 在容器中运行的命令
+CMD [ "npm", "start" ]
+
+# 将应用程序的其余源代码从您的主机复制到映像文件系统
+COPY . ./<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该 <code>dockerfile</code> 复制了 package.json ，运行 npm install ，并启动了端口号 6060 的 node 服务</p>
+<p>可以使用以下 docker 指令来生成 <code>http://localhost:6060</code> 的服务</p>
+<pre class="line-numbers language-sh"><code class="language-sh"># 生成 docker image
+docker build -t na-example .
+# 运行 docker image
+docker run -dp 6060:6060 --name na-example na-example<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-Github-Action-自动化的流程"><a href="#关于-Github-Action-自动化的流程" class="headerlink" title="关于 Github Action 自动化的流程"></a>关于 Github Action 自动化的流程</h3><p>大致期望的流程如下：</p>
+<ol>
+<li><code>git push</code> 最新代码</li>
+<li><code>GitHub Action</code> 开始运行</li>
+<li><code>docker build</code> 最新代码镜像</li>
+<li><code>docker login</code> 默认登陆 <a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></li>
+<li><code>docker push</code> 推送镜像</li>
+</ol>
+<p><code>GitHub Action</code> 可以自己项目内 <code>Action</code> 项目内选择开源的 <code>workflow</code> 生成，选择 docker 的 workflow ，会在项目内生成 <code>.github/workflows/docker.yml</code> 文件，本项目是从 docker 的 workflow 衍生的</p>
+<pre class="line-numbers language-yml"><code class="language-yml">name: Docker
+
+on:
+  push:
+    # Publish `main` as Docker `latest` image.
+    branches:
+      - main
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: na-example
+  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Log into DockHub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Push image to DockHub
+        run: |
+          IMAGE_ID=$DOCKER_USERNAME/$IMAGE_NAME
+
+          # 转换成小写
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # 从版本中删除 github-ref Or github-sha 前缀
+          VERSION=$(echo "${{ github.sha }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # 从标签名称中删除 v 前缀
+          # [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "${{ github.ref }}" == "main" ] && VERSION=latest
+
+          # 保留前 7 位
+          VERSION=${VERSION:0:7}
+
+          # 打印 IMAGE_ID
+          echo IMAGE_ID=$IMAGE_ID
+          # 打印 VERSION
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME ${IMAGE_ID}:$VERSION
+
+          docker push $IMAGE_ID:$VERSION<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>解析以下这个文件</p>
+<p><code>line 1-10</code>：当推送代码至 <code>main</code> 分支或 <code>tag</code> 中有关键字 <code>v</code> 的时候，就会触发工作流</p>
+<p><code>line 12-15</code>：工程流内拉取的分支即是 <code>main</code></p>
+<p><code>line 17-20</code>：定义工作流内的自定义环境变量</p>
+<p><code>line 24</code>：<code>runs-on</code> 工作流的运行环境</p>
+<p><code>line 26-27</code>：工作流步骤，以及工作流运行环境</p>
+<p><code>line 28-32</code>：生成 <code>docker</code> 镜像以及登陆 docker.hub</p>
+<p><code>line 34-60</code>：运行 shell 脚本，条件定义 <code>image</code> 的 <code>tag</code>，然后上传至 docker.hub</p>
+<h4 id="Secrets"><a href="#Secrets" class="headerlink" title="Secrets"></a>Secrets</h4><p>使用 <code>Secrets</code> 作为 <code>env</code> 变量，需要通过 <code>GitHub</code> 进行设置，项目内 <code>Setting -&gt; Secrets</code> 进行创建即可</p>
+<p><code>PS：比较优秀的事是，即便是相关字符串，在 GitHub Action 内也是 * 号显示的</code></p>
+<h3 id="关于遇到的问题"><a href="#关于遇到的问题" class="headerlink" title="关于遇到的问题"></a>关于遇到的问题</h3><h4 id="Q：关于-node-项目使用-127-0-0-1-或-localhost-作为启动-IP-生成-docker-image-化后，运行后无法访问"><a href="#Q：关于-node-项目使用-127-0-0-1-或-localhost-作为启动-IP-生成-docker-image-化后，运行后无法访问" class="headerlink" title="Q：关于 node 项目使用 127.0.0.1 或 localhost 作为启动 IP 生成 docker image 化后，运行后无法访问"></a>Q：关于 node 项目使用 127.0.0.1 或 localhost 作为启动 IP 生成 docker image 化后，运行后无法访问</h4><p>A：由于 127.0.0.1 或 localhost 是指向镜像内的 IP，非对外 IP，如果需要对外访问，可把启动 IP 修改位 0.0.0.0</p>
+<h4 id="Q：关于-GitHub-Action-默认的环境变量"><a href="#Q：关于-GitHub-Action-默认的环境变量" class="headerlink" title="Q：关于 GitHub Action 默认的环境变量"></a>Q：关于 GitHub Action 默认的环境变量</h4><p>A：可参考 <a href="https://docs.github.com/cn/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions" target="_blank" rel="noopener">Context and expression syntax for GitHub Actions</a> 与 <a href="https://docs.github.com/cn/free-pro-team@latest/actions/reference/environment-variables" target="_blank" rel="noopener">environment-variables</a></p>
+<h3 id="关于小结"><a href="#关于小结" class="headerlink" title="关于小结"></a>关于小结</h3><p>本文项目所有代码均从 <a href="https://github.com/ZindexYG/na-example" target="_blank" rel="noopener">na-example</a> 粘贴而来</p>
+<p>感谢阅读</p>
+<hr>
+<h3 id="关于参考"><a href="#关于参考" class="headerlink" title="关于参考"></a>关于参考</h3><ul>
+<li><a href="https://blog.bitsrc.io/https-medium-com-adhasmana-how-to-do-ci-and-cd-of-node-js-application-using-github-actions-860007bebae6" target="_blank" rel="noopener">How to CI and CD a Node.JS Application Using GitHub Actions</a></li>
+<li><a href="https://docs.github.com/cn/free-pro-team@latest/actions" target="_blank" rel="noopener">GitHub Action</a></li>
+<li><a href="https://docs.docker.com/reference/" target="_blank" rel="noopener">docker docs</a></li>
+</ul>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2020 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
