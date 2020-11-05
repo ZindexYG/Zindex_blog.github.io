@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>react-websocket - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于需求"><span class="toc-number">1.</span> <span class="toc-text">关于需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于最简-demo"><span class="toc-number">2.</span> <span class="toc-text">关于最简 demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于主动会话与主动开关机制"><span class="toc-number">3.</span> <span class="toc-text">关于主动会话与主动开关机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于最终展示的代码"><span class="toc-number">4.</span> <span class="toc-text">关于最终展示的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-QA"><span class="toc-number">5.</span> <span class="toc-text">关于 QA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：为什么不实用-socket-io"><span class="toc-number">5.1.</span> <span class="toc-text">Q：为什么不实用 socket.io?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：为什么要在-function-commopent-内里做-WebSocket-初始化？"><span class="toc-number">5.2.</span> <span class="toc-text">Q：为什么要在 function commopent 内里做 WebSocket 初始化？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Q：为什么不能直接使用-WebSocket-readyState-的状态来打印状态？"><span class="toc-number">5.3.</span> <span class="toc-text">Q：为什么不能直接使用 WebSocket.readyState 的状态来打印状态？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于小结"><span class="toc-number">6.</span> <span class="toc-text">关于小结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于借鉴"><span class="toc-number">7.</span> <span class="toc-text">关于借鉴</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>react-websocket</h1>
+  <p><img src="/images/newWebSocket.png" alt=""></p>
+<blockquote>
+<p>或许别人也有，这里也不见得更好</p>
+</blockquote>
+<h3 id="关于需求"><a href="#关于需求" class="headerlink" title="关于需求"></a>关于需求</h3><blockquote>
+<p>简单接受服务端信息的功能</p>
+</blockquote>
+<p><code>前端需求分析</code></p>
+<ul>
+<li>可接受服务端信息</li>
+<li>可关闭会话</li>
+<li>可重启会话</li>
+</ul>
+<p><code>知识需求</code></p>
+<ul>
+<li>一点点 TS + React</li>
+<li>一点点 node +express</li>
+<li>一点点 websocket</li>
+</ul>
+<h3 id="关于最简-demo"><a href="#关于最简-demo" class="headerlink" title="关于最简 demo"></a>关于最简 demo</h3><ul>
+<li>前端仅实现 <code>启动 WebSocket</code> 与 <code>接受会话</code> 为关键</li>
+<li>服务端 node 会实现计时器里实现不断发送信息的任务</li>
+</ul>
+<pre class="line-numbers language-Typescript"><code class="language-Typescript">import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+
+const App = () => {
+  const ws = useRef<WebSocket | null>(null);
+  const [message, setMessage] = useState('');
+  //启动
+  useLayoutEffect(() => {
+    ws.current = new WebSocket('ws://localhost:7070');
+    ws.current.onmessage = e => {
+      setMessage(e.data);
+    };
+    return () => {
+      ws.current?.close();
+    };
+  }, [ws]);
+
+
+  return (
+    <div className='App'>
+      <div className='container'>
+          {message}
+      </div>
+    </div>
+  );
+};<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于主动会话与主动开关机制"><a href="#关于主动会话与主动开关机制" class="headerlink" title="关于主动会话与主动开关机制"></a>关于主动会话与主动开关机制</h3><p>熟悉一下 相关方法</p>
+<ul>
+<li>WebSocket.send() 发送会话</li>
+<li>WebSocket.close() 关闭会话</li>
+<li>WebSocket.onmessage() 接受会话</li>
+</ul>
+<p>在例子里，组件渲染的时候已经开始了 WebSocket 链接，根据需求是要主动开启 WebSocket 链接的，例子关键 WebSocket 需要提取出来</p>
+<pre class="line-numbers language-TypeScript"><code class="language-TypeScript">const webSocketInit = useCallback(() => {
+    if (!ws.current) {
+      ws.current = new WebSocket('ws://localhost:7070');
+    }
+  }, [ws]);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>React 是喜欢不可变数据的，这里使用了 useCallback 包裹了相关方法，以达到可主动链接且不会造成多次渲染的目的</p>
+<p>在组件生命周期外，或许需要关闭会话，达到浏览器资源释放的问题</p>
+<pre class="line-numbers language-TypeScript"><code class="language-TypeScript">useLayoutEffect(()=>{
+  // do somting
+  return ()=>{
+    ws.current?.close();
+  }
+},[ws])<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>React Hooks Api 内建议这样释放资源，同理可以在 commpoent api 内使用 xxx 释放资源</p>
+<h3 id="关于最终展示的代码"><a href="#关于最终展示的代码" class="headerlink" title="关于最终展示的代码"></a>关于最终展示的代码</h3><p>个人认为在最终代码内，最好有日志打印，使用 Hooks api 来监听 WebSocket 的状态去打印日志会显得很费劲且繁琐不堪，得益于 WebSocket 自有的 api 就可以做到很好的日志答应</p>
+<pre class="line-numbers language-TypeScript"><code class="language-TypeScript">
+import React, { useState, useRef, useLayoutEffect, useCallback } from 'react';
+import Header from './components/header';
+import './App.less';
+
+const App = () => {
+  const ws = useRef<WebSocket | null>(null);
+  const [message, setMessage] = useState('');
+  const [readyState, setReadyState] = useState('正在链接中');
+  const [rdNum, SetRdNum] = useState<number>(0);
+
+  /**
+   * 伪随机函数，测试用
+   *  */
+  const getRandomInt = useCallback(() => {
+    SetRdNum(Math.floor(Math.random() * Math.floor(999)));
+  }, []);
+
+  const webSocketInit = useCallback(() => {
+    const stateArr = [
+      '正在链接中',
+      '已经链接并且可以通讯',
+      '连接正在关闭',
+      '连接已关闭或者没有链接成功',
+    ];
+    if (!ws.current || ws.current.readyState === 3) {
+      ws.current = new WebSocket('ws://localhost:7070');
+      ws.current.onopen = _e =>
+        setReadyState(stateArr[ws.current?.readyState ?? 0]);
+      ws.current.onclose = _e =>
+        setReadyState(stateArr[ws.current?.readyState ?? 0]);
+      ws.current.onerror = e =>
+        setReadyState(stateArr[ws.current?.readyState ?? 0]);
+      ws.current.onmessage = e => {
+        setMessage(e.data);
+      };
+    }
+  }, [ws]);
+
+  /**
+   * 初始化 WebSocket
+   * 且使用 WebSocket 原声方法获取信息
+   *  */
+  useLayoutEffect(() => {
+    getRandomInt();
+    webSocketInit();
+    return () => {
+      ws.current?.close();
+    };
+  }, [ws, getRandomInt, webSocketInit]);
+
+  console.log('ws.readyState', ws.current?.readyState);
+
+  return (
+    <div className='App'>
+      <Header status={readyState} />
+      <div className='container'>
+        <div>{message}</div>
+        {/* <div>{readyState}</div> */}
+        <div
+          onClick={() => {
+            ws.current?.close();
+          }}>
+          Clone
+        </div>
+        <div
+          onClick={() => {
+            getRandomInt();
+            webSocketInit();
+          }}>
+          start
+        </div>
+        <div
+          onClick={() => {
+            if (ws.current?.readyState !== 1) {
+              console.log('尚未链接成功');
+              setMessage('正在链接');
+              return;
+            }
+            ws.current?.send(rdNum.toString());
+          }}>
+          ID:{rdNum}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-QA"><a href="#关于-QA" class="headerlink" title="关于 QA"></a>关于 QA</h3><h4 id="Q：为什么不实用-socket-io"><a href="#Q：为什么不实用-socket-io" class="headerlink" title="Q：为什么不实用 socket.io?"></a>Q：为什么不实用 socket.io?</h4><p>简单需求下，没必要下载一个库，学习 WebSocket 也有利于理解 socket 源码，或许后期也会在项目使用 socket.io</p>
+<h4 id="Q：为什么要在-function-commopent-内里做-WebSocket-初始化？"><a href="#Q：为什么要在-function-commopent-内里做-WebSocket-初始化？" class="headerlink" title="Q：为什么要在 function commopent 内里做 WebSocket 初始化？"></a>Q：为什么要在 function commopent 内里做 WebSocket 初始化？</h4><p>可以肯定，在外初始化肯定是更好阅读与理解的，如下例子：</p>
+<pre class="line-numbers language-TypeScript"><code class="language-TypeScript">import React from 'react';
+
+const ws = new WebSocket('ws://loaclhost:7070');
+
+const App = () => {
+  // do ing...
+};<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>考虑到后续的 WebSocket 状态均需要在 function commopent 内显示，所以最终选择了在内初始化的选择，目前还没看到优秀的在外且可接受状态的优秀例子</p>
+<h4 id="Q：为什么不能直接使用-WebSocket-readyState-的状态来打印状态？"><a href="#Q：为什么不能直接使用-WebSocket-readyState-的状态来打印状态？" class="headerlink" title="Q：为什么不能直接使用 WebSocket.readyState 的状态来打印状态？"></a>Q：为什么不能直接使用 WebSocket.readyState 的状态来打印状态？</h4><p>WebSocket.readyState 实际上并没有跟着返回消息或者操作更新了状态，需要主动获取来感知状态的更新</p>
+<h3 id="关于小结"><a href="#关于小结" class="headerlink" title="关于小结"></a>关于小结</h3><p>本文或许没多到新鲜感，属于个人笔记的流水线文章</p>
+<p>感谢各位阅读!</p>
+<hr>
+<h3 id="关于借鉴"><a href="#关于借鉴" class="headerlink" title="关于借鉴"></a>关于借鉴</h3><ul>
+<li><a href="https://medium.com/enjoy-life-enjoy-coding/javascript-websocket-%E8%AE%93%E5%89%8D%E5%BE%8C%E7%AB%AF%E6%B2%92%E6%9C%89%E8%B7%9D%E9%9B%A2-34536c333e1b" target="_blank" rel="noopener">JavaScript | WebSocket 讓前後端沒有距離</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/WebSocket" target="_blank" rel="noopener">WebSocket() - Web API 接口参考 | MDN</a></li>
+<li><a href="https://www.pluralsight.com/guides/using-web-sockets-in-your-reactredux-app" target="_blank" rel="noopener">Using WebSockets in Your React/Redux App</a></li>
+</ul>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2020 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
