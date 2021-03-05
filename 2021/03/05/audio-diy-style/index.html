@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-z-16x16.ico " />
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-z-32x32.ico">
+  
+  
+  <title>关于 Audio 自定义样式 - 时之物语</title>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-coy.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
+
+
+  <body class='fixed'>
+    <div class="container">
+      <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">时之物语</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link menu-item-home">Home</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/about" class="menu-item-link menu-item-about">About</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/links" class="menu-item-link menu-item-friends">Friends</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+
+        <main class="main">
+          
+  <input type="checkbox" id="toggle-toc" class="toggle-toc-right" />
+  <div class="toc-toggle toc-toggle-right">
+    <label for="toggle-toc">
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <div class="toc-wrap toc-wrap-right">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前置"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-css-来设置-audio-样式"><span class="toc-number">2.</span> <span class="toc-text">关于 css 来设置 audio 样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-JavaScript-来设置-audio-样式"><span class="toc-number">3.</span> <span class="toc-text">关于 JavaScript 来设置 audio 样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-React-写一个自定义的-Audio-组件"><span class="toc-number">4.</span> <span class="toc-text">关于 React 写一个自定义的 Audio 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+  <label class="mask" for="toggle-toc"></label>
+
+<div id="post-content">
+  <h1>关于 Audio 自定义样式</h1>
+  <p><img src="/images/Audio_Diy_Style.png" alt=""></p>
+<blockquote>
+<p>菜还是那道菜，料不一样了</p>
+</blockquote>
+<a id="more"></a>
+
+<ul>
+<li>前置</li>
+<li>关于 css 来设置 audio 样式</li>
+<li>关于 JavaScript 来设置样式</li>
+<li>关于 React 写一个自定义的 Audio 组件</li>
+<li>总结</li>
+</ul>
+<h3 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h3><ul>
+<li>大致了解 audio <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio#%E5%B1%9E%E6%80%A7" target="_blank" rel="noopener">属性</a></li>
+<li>懂一点点 CSS</li>
+<li>懂一点点 JS 与 audio <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio#%E4%BA%8B%E4%BB%B6" target="_blank" rel="noopener">事件</a></li>
+<li>懂一点点 React</li>
+</ul>
+<h3 id="关于-css-来设置-audio-样式"><a href="#关于-css-来设置-audio-样式" class="headerlink" title="关于 css 来设置 audio 样式"></a>关于 css 来设置 audio 样式</h3><p>引用 MDN 中的话 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio#%E4%BD%BF%E7%94%A8_css_%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F" target="_blank" rel="noopener">使用 CSS 设置样式</a></p>
+<ul>
+<li>audio 元素没有自带的固有视觉样式，除非如果声明了 controls 属性，则会显示浏览器的默认控件。</li>
+<li>默认控件的 display 的默认值为 inline。将该值设为 block 通常会对定位和布局有好处，除非你想将控件放在文本块或类似元素中。</li>
+<li>你可以使用作用于整个控件的属性来为其设置样式。例如可用 border、border-radius、padding, margin 等等。但你不能设置音频播放器中的单个组件（如改变按钮大小、改变图标或字体等）。控件在不同的浏览器中也有所不同。</li>
+<li>如果在跨浏览器中得到一致的外观和体验，你需要创建自定义控件；自定义控件可以根据你的需求任意设置样式，还可以使用 JavaScript 和 HTMLMediaElement API 来设置更多功能。</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_delivery/Video_player_styling_basics" target="_blank" rel="noopener">视频播放器样式基础</a> 提供了一些有用的样式技术，这篇文章围绕 video 而写，但大部分都可以用于 audio。</li>
+</ul>
+<p>总上所述，关键就是在于 css 可操作性相对少，且会产生关于兼容性的问题，个人也仅作为</p>
+<h3 id="关于-JavaScript-来设置-audio-样式"><a href="#关于-JavaScript-来设置-audio-样式" class="headerlink" title="关于 JavaScript 来设置 audio 样式"></a>关于 JavaScript 来设置 audio 样式</h3><p>说是 JavaScript ，依然也需要配合到 css 里面来的（不然不好看</p>
+<ol>
+<li><p>准备一个,最简单的带有 audio 的 html，并把布置好布局</p>
+</li>
+<li><p>关键 JavaScript 代码</p>
+<ul>
+<li>2.1 准备参数</li>
+<li>2.2 播放 &amp;&amp; 暂停 &amp;&amp; 进度更新</li>
+<li>2.3 拖动进度条</li>
+</ul>
+</li>
+<li><p>配合 css 食用</p>
+</li>
+<li><p>准备一个,最简单的带有 audio 的 html，并把布置好布局</p>
+</li>
+</ol>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Audio DIY<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>./style.css<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    &lt;audio
+      id='audio'
+      src='https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3''
+      preload='metadata' ><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>audio</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>audio-container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>audio-toggle<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>control<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        播放
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>audio-progress-box<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>progress<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>progressDot<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>control-dot<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>audio-progress-bar<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>control-progress<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>audio-time<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>‘time’<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>current<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>00:00<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span> / <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>duration<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>00:00<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>./audio.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2.1 准备参数</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">const Audio              = document.querySelector('#audio');
+const contorl            = document.querySelector('#control');
+const contorlDot         = document.querySelector('#control-dot');
+const contorlProgress    = document.querySelector('#control-progress');
+const contorlProgressBox = document.querySelector('#progress');
+const current            = document.querySelector('#current');
+const duration           = document.querySelector('#duration');
+
+// 工具函数
+// 时分秒转换
+function transTime(value) {
+  var time = '';
+  var h = parseInt(`${value / 3600}`);
+  value %= 3600;
+  var m = parseInt(`${value / 60}`);
+  var s = parseInt(`${value % 60}`);
+  if (h > 0) {
+    time = formatTime(h + ':' + m + ':' + s);
+  } else {
+    time = formatTime(m + ':' + s);
+  }
+
+  return time;
+}
+// 补零
+function formatTime(value) {
+  var time = '';
+  var s = value.split(':');
+  var i = 0;
+  for (; i < s.length - 1; i++) {
+    time += s[i].length === 1 ? '0' + s[i] : s[i];
+    time += ':';
+  }
+  time += s[i].length === 1 ? '0' + s[i] : s[i];
+
+  return time;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2.2 播放 &amp;&amp; 暂停 &amp;&amp; 进度更新</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">contorl.addEventListener('click', e => {
+  if (e.target.innerText === '播放') {
+    e.target.innerText = '暂停';
+    Audio.play();
+  } else {
+    e.target.innerText = '播放';
+    Audio.pause();
+  }
+});
+
+Audio.addEventListener('loadedmetadata', e => {
+  duration.innerText = transTime(e.target.duration);
+});
+
+Audio.addEventListener('timeupdate', e => {
+  let value = e.target.currentTime / Audio.duration;
+  current.innerText = transTime(e.target.currentTime);
+  contorlProgress.style.width = `${value * 100}%`;
+  contorlDot.style.left = `${value * 100}%`;
+});
+
+Audio.addEventListener('ended', e => {
+  contorlProgress.style.width = '0%';
+  contorlDot.style.left = '0%';
+  contorl.innerText = '播放';
+});<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2.3 拖动进度条</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">// 鼠标按下
+contorlDot.addEventListener('mousedown', down, false);
+contorlDot.addEventListener('touchstart', down, false);
+
+// 开始拖动
+document.addEventListener('mousemove', move, false);
+document.addEventListener('touchmove', move, false);
+
+// 拖动结束
+document.addEventListener('mouseup', end, false);
+document.addEventListener('touchend', end, false);
+
+const position  = {
+  oriOffestLeft : 0, // 移动开始时进度条的点距离进度条的偏移值
+  oriX          : 0, // 移动开始时的x坐标
+  maxLeft       : 0, // 向左最大可拖动距离
+  maxRight      : 0, // 向右最大可拖动距离
+};
+let flag        = false; // 标记是否拖动开始
+
+const down = event => {
+  if (!Audio.pause || Audio.currentTime !== 0) {
+    flag = true;
+
+    position.oriOffestLeft = contorlDot.offsetLeft;
+    position.oriX          = event.touches ?
+                             event.touches[0].clientX :
+                             event.clientX;
+    // 要同时适配mousedown和touchstart事件
+    position.maxLeft       = position.oriOffestLeft;
+    // 向左最大可拖动距离
+    position.maxRight      = contorlProgressBox.offsetWidth -
+                             position.oriOffestLeft; // 向右边最大可拖动距离
+
+    if (event && event.preventDefault) event.preventDefault();
+    else event.returnValue = false;
+
+    if (event && event.stopPropagation) event.stopPropagation();
+    else window.event.cancelBubble = true;
+  }
+};
+const move = event => {
+  if (flag) {
+    let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    let length  = clientX - position.oriX;
+    if (length > position.maxRight) {
+      length = position.maxRight;
+    } else if (length < -position.maxLeft) {
+      length = -position.maxLeft;
+    }
+
+    let pgsWidth = parseFloat(
+      window.getComputedStyle(contorlProgressBox, null).width.replace('px'),
+    );
+
+    let rate = (position.oriOffestLeft + length) / pgsWidth;
+
+    Audio.currentTime = Audio.duration * rate;
+  }
+};
+
+const end = () => {
+  flag = false;
+};<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关于-React-写一个自定义的-Audio-组件"><a href="#关于-React-写一个自定义的-Audio-组件" class="headerlink" title="关于 React 写一个自定义的 Audio 组件"></a>关于 React 写一个自定义的 Audio 组件</h3><p>框架加持会让组件更加简单，chch</p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">import React, {
+  useRef,
+  useLayoutEffect,
+  useState,
+  useEffect,
+  MouseEvent,
+} from 'react';
+import './Audio.css';
+
+
+function transTime(value: number) {
+  var time = '';
+  var h = parseInt(`${value / 3600}`);
+  value %= 3600;
+  var m = parseInt(`${value / 60}`);
+  var s = parseInt(`${value % 60}`);
+  if (h > 0) {
+    time = formatTime(h + ':' + m + ':' + s);
+  } else {
+    time = formatTime(m + ':' + s);
+  }
+
+  return time;
+}
+
+function formatTime(value: string) {
+  var time = '';
+  var s = value.split(':');
+  var i = 0;
+  for (; i < s.length - 1; i++) {
+    time += s[i].length === 1 ? '0' + s[i] : s[i];
+    time += ':';
+  }
+  time += s[i].length === 1 ? '0' + s[i] : s[i];
+
+  return time;
+}
+
+export const Audio: React.FC<any> = props => {
+  const { src, width = '80%', height = '30px' } = props;
+
+  const audioRef                      = useRef<HTMLAudioElement>(null);
+  const barBgRef                      = useRef<HTMLDivElement>(null);
+  const barRef                        = useRef<HTMLDivElement>(null);
+  const dotRef                        = useRef<HTMLSpanElement>(null);
+  const uidRef                        = useRef<string>(uniqueId());
+
+  const [toggle, setToggle]           = useState<boolean>(true);
+  const [progress, setProgress]       = useState<number>(0);
+  const [duration, setDuration]       = useState<string>('00 : 00');
+  const [currentTime, setCurrentTime] = useState<string>('00:00');
+
+  useLayoutEffect(() => {
+    if (audioRef.current && src) {
+      audioRef.current.addEventListener('play', (e: Event) => {
+        const pid    = (e.target as HTMLAudioElement).getAttribute('pid');
+        const audios = document.querySelectorAll('audio');
+        console.log('pid', pid);
+        audios.forEach((element, index) => {
+          if (element.getAttribute('pid') === pid) return;
+          element.pause();
+        });
+      });
+
+      audioRef.current.addEventListener('loadedmetadata', e => {
+        const duration = transTime(
+          (e.target as HTMLAudioElement).duration as number,
+        );
+        setDuration(duration);
+      });
+      audioRef.current.addEventListener('play', _res => {
+        setToggle(false);
+      });
+      audioRef.current.addEventListener('pause', () => {
+        setToggle(true);
+      });
+      audioRef.current.addEventListener('timeupdate', e => {
+        let value =
+          (e.target as HTMLAudioElement).currentTime /
+          (audioRef.current as HTMLAudioElement).duration;
+        setProgress(value * 100);
+        setCurrentTime(transTime((e.target as HTMLAudioElement).currentTime));
+        // console.log('timeupdate res', res.target.currentTime);
+      });
+    }
+    return () => {};
+  }, [src]);
+
+  useEffect(() => {
+    if (dotRef.current && src) {
+      const position  = {
+        oriOffestLeft : 0, // 移动开始时进度条的点距离进度条的偏移值
+        oriX          : 0, // 移动开始时的x坐标
+        maxLeft       : 0, // 向左最大可拖动距离
+        maxRight      : 0, // 向右最大可拖动距离
+      };
+      let flag        = false; // 标记是否拖动开始
+
+      // 按下
+      const down = (event: TouchEvent | MouseEvent) => {
+        if (!audioRef.current?.paused || audioRef.current.currentTime !== 0) {
+          flag                   = true;
+          position.oriOffestLeft = dotRef.current?.offsetLeft ?? 0; // 初始位置
+          position.oriX          = position.oriX =
+            event instanceof TouchEvent
+              ? event.touches[0].clientX
+                                 : event.clientX; // 要同时适配mousedown和touchstart事件
+          position.maxLeft       = position.oriOffestLeft; // 向左最大可拖动距离
+          position.maxRight      =
+            barBgRef.current?.offsetWidth ?? 0 - position.oriOffestLeft; // 向右边最大可拖动距离
+
+          if (event && event.preventDefault) {
+            event.preventDefault();
+          } else {
+            (event as TouchEvent).returnValue = false;
+          }
+
+          // 禁止事件冒泡
+          if (event && event.stopPropagation) {
+            event.stopPropagation();
+          }
+        }
+      };
+      // 移动
+      const move = (event: TouchEvent | MouseEvent) => {
+        if (flag && barBgRef.current) {
+          let clientX =
+                        event instanceof TouchEvent
+                        ? event.touches[0].clientX
+                        : event.clientX; // 要同时适配mousemove和touchmove事件
+
+          let length  = clientX - position.oriX;
+          if (length > position.maxRight) {
+            length = position.maxRight;
+          } else if (length < -position.maxLeft) {
+            length = -position.maxLeft;
+          }
+          // let pgsWidth = barBgRef.current?.offsetWidth;
+          let pgsWidth = parseFloat(
+            window.getComputedStyle(barBgRef.current).width.replace('px', ''),
+          );
+          let rate = (position.oriOffestLeft + length) / pgsWidth;
+
+          console.log('===', position.oriOffestLeft, length);
+
+          console.log(
+            '偏移总长比例',
+            (audioRef.current as HTMLAudioElement).duration * rate,
+            rate,
+          );
+          (audioRef.current as HTMLAudioElement).currentTime =
+            (audioRef.current as HTMLAudioElement).duration * rate;
+        }
+      };
+      // 结束
+      const end = () => {
+        flag = false;
+      };
+
+      // 鼠标按下时
+      dotRef.current.addEventListener('mousedown', down as any, false);
+      dotRef.current.addEventListener('touchstart', down, false);
+
+      // 开始拖动
+      document.addEventListener('mousemove', move as any, false);
+      document.addEventListener('touchmove', move, false);
+
+      // 拖动结束
+      document.addEventListener('mouseup', end, false);
+      barBgRef.current?.addEventListener('touchend', end, false);
+    }
+  }, [src]);
+
+  const handlePaly = () => {
+    if (toggle && src) {
+      audioRef.current?.play();
+      return;
+    }
+    audioRef.current?.pause();
+    return;
+  };
+
+  return (
+    <>
+      <audio
+        // @ts-ignore
+        pid={uidRef.current}
+        controls={false}
+        src={src}
+        preload='metadata'
+        ref={audioRef}>
+        您的浏览器不支持 audio 标签
+      </audio>
+      <div className='audio-container' style={{ width, height }}>
+        <div className='audio-toggle' onClick={handlePaly}>
+          {toggle && src ? '>' : '||'}
+        </div>
+        <div className='audio-progress-bar-bg' ref={barBgRef}>
+          <span
+            ref={dotRef}
+            className='progressDot'
+            style={{ left: `${progress - 2}%` }}></span>
+          <div
+            ref={barRef}
+            className='audio-progress-bar'
+            style={{
+              width: `${progress}%`,
+            }}></div>
+        </div>
+        <div className='audio-time'>
+          {currentTime}/{duration}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Audio;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>PS：原生内有个功能是下载，这里并没有实现</code></p>
+<p>关于 JS 代码部分，大部分参考至这里 <a href="https://blog.csdn.net/Dandelion_drq/article/details/77645659" target="_blank" rel="noopener">H5 audio 音频标签自定义样式修改以及添加播放控制事件</a></p>
+<p>需求原因，原生样式似乎并不能满足产品，就会出现需要 DIY 的情况，个人参照了很多网上相关的 Blog，如有错误，敬请指教</p>
+<p>感谢阅读</p>
+<p><code>参考文章</code></p>
+<ul>
+<li><a href="https://blog.csdn.net/Dandelion_drq/article/details/77645659" target="_blank" rel="noopener">H5 audio 音频标签自定义样式修改以及添加播放控制事件</a></li>
+<li><a href="https://www.zhangxinxu.com/wordpress/2019/07/html-audio-api-guide/" target="_blank" rel="noopener">HTML audio基础API完全使用指南</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio" target="_blank" rel="noopener">MDN <audio></a></li>
+</ul>
+<hr>
+
+</div>
+
+<script>
+  // I'm not sure your browser supports `es6`
+  window.addEventListener('load', function () {
+    [].concat(Array.from(document.querySelectorAll('code')), Array.from(document.querySelectorAll('pre'))).filter(function (item) {return item.className.indexOf('language') >= 0}).forEach(function (tag) { tag.classList.add('line-numbers') })
+    Prism.highlightAll()
+
+    let scrollY = window.scrollY
+    let headersList = Array.from(document.querySelector('#post-content').querySelectorAll('h1,h2,h3,h4,h5,h6')).map(function (item) {
+      let rect = item.getBoundingClientRect()
+      let anchorTag = document.querySelector(`a.toc-link[href="#${item.id}"]`)
+
+      if (!anchorTag) return
+      return {
+        top: scrollY + rect.top - rect.height,
+        tag: item,
+        anchorTag: anchorTag
+      }
+    }).filter(function (item) { return item })
+
+    window.addEventListener('scroll', debounce(scrollHandler, 200))
+    scrollHandler()
+
+    function scrollHandler () {
+      let scrollY = window.scrollY
+      let minInfo = null
+
+      for (let item of headersList) {
+        if (!minInfo) {
+          minInfo = item
+          continue
+        }
+
+        if ((scrollY - item.top) >= 0 && (scrollY - minInfo.top) > (scrollY - item.top)) {
+          minInfo = item
+        }
+      }
+
+      if (minInfo) {
+        headersList.forEach(function (item) {
+          item.anchorTag && item.anchorTag.classList.remove('selected')
+        })
+        minInfo.anchorTag.classList.add('selected')
+      }
+    }
+
+    function debounce (func, delay) {
+      let debounceIdentify = 0
+      return function () {
+        debounceIdentify && clearTimeout(debounceIdentify)
+        debounceIdentify = setTimeout(function () {
+          debounceIdentify = 0
+          func.apply(this, arguments)
+        }, delay)
+      }
+    }
+  })
+</script>
+
+        </main>
+        <a href="#" class="goto-top">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-info" class="inner">
+      <p class="copyright">&copy; 2021 时之物语 ZYG&#39;s Blog 保留一切权利 ｜ 粤ICP备15078531号-1<br></p>
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      theme by <a href="https://github.com/Jiasm/hexo-theme-sheet" target="_blank">Sheet</a>
+    </div>
+    <ul class="contact-info">
+      
+        <a class="contact-link" href="https://github.com/zindexyg" target="_blank"><i class="fa fa-github"></i></a>
+      
+      
+        <a class="contact-link" href="https://weibo.com/u/3249847654" target="_blank"><i class="fa fa-weibo"></i></a>
+      
+      
+      
+      
+        <a class="contact-link" href="mailto:zinger_yg@163.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      
+    </ul>
+  </div>
+</footer>
+
+
+
+      <script>
+      function footerHandler () {
+        if (!window.screen || !document.body) return
+        var hasComments = document.querySelector('.comments')
+        if ((window.screen.availHeight - (hasComments ? 350 : 0)) > document.body.clientHeight) {
+          document.body.classList.add('fixed')
+        } else {
+          document.body.classList.remove('fixed')
+        }
+      }
+      footerHandler()
+      window.addEventListener('resize', footerHandler)
+    </script>
+  </body>
+  <script>
+    var pathname = new URL(location.href).pathname.replace(/\/$/, '')
+
+    switch (pathname) {
+      case '/about':
+        document.querySelector('.menu-item-about').classList.add('active')
+        break
+      case '/contact':
+        document.querySelector('.menu-item-contact').classList.add('active')
+        break
+      case '/links':
+        document.querySelector('.menu-item-friends').classList.add('active')
+        break
+      default:
+        document.querySelector('.menu-item-home').classList.add('active')
+    }
+  </script>
+  
+
+</html>
